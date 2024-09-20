@@ -173,3 +173,29 @@ Prikazati na standardnom izlazu sve unete laptopove koji imaju više od 8 GB RAM
                 System.out.println(l.toString());
         }
 ```
+7.Unesi string i izbrisi sve duple karaktere sem prvog pojavljivanja.
+```
+        System.out.println("Unesi rec");
+        String mojaRec = s.next();
+        String[] slovoPoSlovo = mojaRec.split("");
+        List<String> bezDuplikata = new ArrayList<>();
+
+        for (int i = 0; i < slovoPoSlovo.length; i++) {
+            String treuntoSlovo = slovoPoSlovo[i];
+
+            boolean jesteDuplikat = false;
+
+            for (String slovoBezDuplikata : bezDuplikata) {
+                if (slovoBezDuplikata.equals(treuntoSlovo)) {
+                    jesteDuplikat = true;
+                    break;
+                }
+            }
+            if (jesteDuplikat == false) {
+                bezDuplikata.add(treuntoSlovo);
+            }
+        }
+        String novaRec = String.join("", bezDuplikata);
+        
+        System.out.println("Nova rec je " + novaRec);
+```
