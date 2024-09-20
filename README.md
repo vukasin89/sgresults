@@ -199,3 +199,159 @@ Prikazati na standardnom izlazu sve unete laptopove koji imaju više od 8 GB RAM
         
         System.out.println("Nova rec je " + novaRec);
 ```
+8. Brzi internet
+```
+public abstract class Racun {
+    String brojRacuna;
+
+    public Racun(String brojRacuna) {
+        this.brojRacuna = brojRacuna;
+    }
+    
+    abstract double izracunajCenu();
+    abstract boolean proveriRacun();
+    
+}
+//klasa internetRacun
+public class InternetRacun extends Racun {
+
+    String korisnik, paket;
+    boolean popust;
+    int osnovnaTarifa;
+
+    public InternetRacun(String korisnik, String paket, boolean popust, int osnovnaTarifa, String brojRacuna) {
+        super(brojRacuna);
+        this.korisnik = korisnik;
+        this.paket = paket;
+        this.popust = popust;
+        this.osnovnaTarifa = osnovnaTarifa;
+    }
+
+    @Override
+    public double izracunajCenu() {
+        double cena;
+
+        if (paket.toLowerCase().contains("brzi")) {
+            cena = osnovnaTarifa * 1000;
+        } else {
+            cena = osnovnaTarifa * 500;
+        }
+
+        if (popust) {
+
+            cena = cena * 0.8;
+        }
+        return cena;
+    }
+
+    @Override
+    public boolean proveriRacun() {
+        if (brojRacuna.length() != 0) {
+            return false;
+        }
+        if (!brojRacuna.startsWith("160")) {
+            return false;
+        }
+
+        for (int i = 2; i < brojRacuna.length(); i++) {
+            if (!Character.isDigit(brojRacuna.charAt(i))) {
+                return false;
+            }
+        }
+        return false;
+    }
+    @Override
+    public String toString(){
+        return "Racun za internet " + brojRacuna + " " + korisnik + " " + paket;
+    }
+}
+//main class
+public class Dan92Racun {
+
+    public static void main(String[] args) {
+        InternetRacun ir1 = new InternetRacun ("Pera", "InternetBrzi", true, 3, "1601234567");
+        InternetRacun ir2 = new InternetRacun ("Pera", "BrziInternet", true, 3, "1601234567");
+        InternetRacun ir3 = new InternetRacun ("Pera", "Internet", false, 4, "16012345678");
+        
+        Racun [] racuni = {ir1, ir2, ir3};
+        
+        System.out.println("Svi racuni");
+        for(Racun r: racuni){
+            System.out.println("r");
+            System.out.println("Cena je " + r.izracunajCenu());
+        }
+    }
+    
+}
+```
+9. Ocenjivanje
+```
+public interface Ocenjivanje {
+    double rezultat(String odgovor, String kljuc);
+    
+    double maxBodova = 100.00;
+}
+//KLASA OSOBA
+public class Osoba {
+    private String ime, prezime;
+
+    public Osoba(String ime, String prezime) {
+        this.ime = ime;
+        this.prezime = prezime;
+    }
+    
+}
+//KLASA STUDENT
+public class Student extends Osoba implements Ocenjivanje, Comparable {
+    private String brojIndeksa;
+
+    public Student(String brojIndeksa, String ime, String prezime) {
+        super(ime, prezime);
+        this.brojIndeksa = brojIndeksa;
+    }
+
+    public String getBrojIndeksa() {
+        return brojIndeksa;
+    }
+    
+    @Override
+    public double rezultat(String odgovor, String kljuc){
+        if(odgovor.length() != kljuc.length())
+            return 0;
+        int n = odgovor.length();
+        
+        double poeniPoZadatku = maxBodova/n;
+        double poeni = 0;
+        for (int i = 0; i<n; i++){
+            if(odgovor.charAt(i) == kljuc.charAt(i))
+                poeni +=poeniPoZadatku;
+        }
+        return poeni;
+    }
+    
+     //int rez1 = s.compareTo(v);
+        //int rez2 = v.compareTo(s);
+    
+    @Override
+    public int compareTo(Object o){     
+    Student s =(Student)o;
+    if(this.brojIndeksa.equals((s.getBrojIndeksa())))
+        return 0;
+    return this.brojIndeksa.compareTo(s.getBrojIndeksa());
+    }
+}
+//MAIN CLASS
+public class Dan92 {
+
+    public static void main(String[] args) {
+        Student s = new Student("1234560", "Pera", "Peric");
+        Student v = new Student("1234560", "Vule", "Vule");
+        
+        int rez1 = s.compareTo(v);
+        int rez2 = v.compareTo(s);
+        //Student s = new Student ("1234560", "Pera", "Peric",);
+        System.out.println("Bodovi na testu " + s.rezultat("abbacaaaba", "bbcaabbcaa"));
+    }
+
+}
+```
